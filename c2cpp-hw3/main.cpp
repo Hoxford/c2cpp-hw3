@@ -41,18 +41,104 @@ using namespace std;
 const unsigned int START_NODE   = 10;
 const unsigned int END_NODE     = 10;
 
+//class point
+//{
+//public:
+//	point operator+(point p)
+//	{
+//		return point(x+p.x_,y+p.y_);
+//	}
+//
+//	point(double x = 0.0, double y = 0.0)
+//	{
+//		x_ = x;
+//		y_ = y;
+//	}
+//private:
+//	double x_, y_;
+//};
+
+template <class T>
+class get_stuff
+{
+public:
+    get_stuff(T a, T b)
+    {
+        a_ = a;
+        b_ = b;
+    }
+    T biggest();
+    T smallest();
+    T diff();
+    T sum();
+private:
+    T a_;
+    T b_;
+};
+
+template <class T>
+T get_stuff<T>::biggest()
+{
+    return(a_>b_)?a_:b_;
+}
+
+template <class T>
+T get_stuff<T>::smallest()
+{
+    return(a_>b_)?b_:a_;
+}
+
+template <class T>
+T get_stuff<T>::diff()
+{
+    if(a_>=b_)
+    {
+        return(a_ - b_);
+    }
+    else
+    {
+        return(b_ - a_);
+    }
+}
+
+template <class T>
+T get_stuff<T>::sum()
+{
+    return(a_ + b_);
+}
+
+class my_class
+{
+public:
+    my_class(int x, int y)
+    {
+        x_ = x;
+        y_ = y;
+        pMy_stuff = new get_stuff<int>(x,y);
+    };
+
+    get_stuff<int> * pMy_stuff;
+private:
+    int x_,y_;
+};
+
 int main() {
     int verticies = 50;
     float max_range = 9.5;
     float density = 0.2;
+//    point a, b(2,1), c(0.5,6);
     Graph * graph = new Graph(verticies, max_range, density);
+    my_class * a_class = new my_class(2,4);
 
+    cout << a_class->pMy_stuff->biggest() << endl;
+
+//    a = b + c;
     Shortest_Path * Path = new Shortest_Path(graph, START_NODE, END_NODE);
     for(int x = 0; x < verticies; x++)
     {
         for(int y = 0; y < verticies; y++)
         {
-            Path->path();
+//            Path->path();
         }
     }
     cout << "-fin-" << endl;

@@ -3,3 +3,5 @@
 /main.o
 /c2cpp-hw3.o
 /graph.o
+/priority_queue.o
+/shortest_path.o

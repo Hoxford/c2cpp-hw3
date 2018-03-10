@@ -1,7 +1,9 @@
 CXXFLAGS =	-O2 -g -Wall -fmessage-length=0
 
 OBJS =		main.o\
-            graph.o
+            graph.o\
+            shortest_path.o\
+            priority_queue.o
 
 LIBS =
 
