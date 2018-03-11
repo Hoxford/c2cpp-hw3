@@ -53,6 +53,12 @@ public:
         order.resize(length);
     }
 
+    bool put_on(U thing)
+    {
+        order.push_back(thing);
+        return true;
+    }
+
 private:
     vector<U>order;
 };
@@ -104,14 +110,29 @@ T do_stuff<T>::orderly_sum(T start, T end)
 {
     assert(start != end);
     assert(start < end);
-    assert(start >= a_);
-    assert(end <= b_);
+//    assert(start >= a_);  todo a and b will need to represent beginning and end of vector
+//    assert(end <= b_);
+    vector<items<T>>stuff;
+    T i;
+    unsigned int n;
+
+    //fill the vector list with items from stuffs vector
+    for(i = start, n = 0; i <= end; i++, n++)
+    {
+        stuff.push_back(items<T>());
+        stuff[n].index = i;
+        stuff[n].value = n_[i];
+    }
 
     order_stuff<T,items<T>> * pOrder = new order_stuff<T,items<T>>((start - end) + 1);
-    for(T i = start; i <= end; i++)
-    {
+//    pOrder->put_on()
+    //    pOrder->put_on(n_[start]);
+//    for(T i = start; i <= end; i++)
+//    {
 //        pOrder;
-    }
+//    }
+
+    return 0;
 }
 
 template <class T>
@@ -167,24 +188,24 @@ private:
 };
 
 int main() {
-    int verticies = 50;
-    float max_range = 9.5;
-    float density = 0.2;
+//    int verticies = 50;
+//    float max_range = 9.5;
+//    float density = 0.2;
 //    point a, b(2,1), c(0.5,6);
-    Graph * graph = new Graph(verticies, max_range, density);
+//    Graph * graph = new Graph(verticies, max_range, density);
     the_stuff * Stuff = new the_stuff(10,4);
 
     Stuff->pDo_Stuff->orderly_sum(3,8);
 
 //    a = b + c;
-    Shortest_Path * Path = new Shortest_Path(graph, START_NODE, END_NODE);
-    for(int x = 0; x < verticies; x++)
-    {
-        for(int y = 0; y < verticies; y++)
-        {
-//            Path->path();
-        }
-    }
+//    Shortest_Path * Path = new Shortest_Path(graph, START_NODE, END_NODE);
+//    for(int x = 0; x < verticies; x++)
+//    {
+//        for(int y = 0; y < verticies; y++)
+//        {
+////            Path->path();
+//        }
+//    }
     cout << "-fin-" << endl;
     return 0;
 }
