@@ -31,6 +31,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <cassert>
 
 #include "graph.hpp"
 #include "priority_queue.hpp"
@@ -41,55 +42,92 @@ using namespace std;
 const unsigned int START_NODE   = 10;
 const unsigned int END_NODE     = 10;
 
-//class point
+
+
+template <class L, class U>
+class order_stuff
+{
+public:
+    order_stuff(L length)
+    {
+        order.resize(length);
+    }
+
+private:
+    vector<U>order;
+};
+
+template<typename item>
+struct items
+{
+    item index;
+    item value;
+};
+
+//struct item
 //{
-//public:
-//	point operator+(point p)
-//	{
-//		return point(x+p.x_,y+p.y_);
-//	}
-//
-//	point(double x = 0.0, double y = 0.0)
-//	{
-//		x_ = x;
-//		y_ = y;
-//	}
-//private:
-//	double x_, y_;
+//    item index;
+//    item value;
 //};
 
 template <class T>
-class get_stuff
+class do_stuff
 {
 public:
-    get_stuff(T a, T b)
+    do_stuff(vector<T>n, T a, T b)
     {
         a_ = a;
         b_ = b;
+        n_ = n;
     }
     T biggest();
     T smallest();
     T diff();
     T sum();
+    T orderly_sum(T start, T end);
+
+//    template<typename items>
+//    struct item
+//    {
+//        T index;
+//        T value;
+//    };
+
 private:
     T a_;
     T b_;
+    vector<T>n_;
 };
 
 template <class T>
-T get_stuff<T>::biggest()
+T do_stuff<T>::orderly_sum(T start, T end)
+{
+    assert(start != end);
+    assert(start < end);
+    assert(start >= a_);
+    assert(end <= b_);
+
+    order_stuff<T,items<T>> * pOrder = new order_stuff<T,items<T>>((start - end) + 1);
+    for(T i = start; i <= end; i++)
+    {
+//        pOrder;
+    }
+}
+
+template <class T>
+T do_stuff<T>::biggest()
 {
     return(a_>b_)?a_:b_;
 }
 
 template <class T>
-T get_stuff<T>::smallest()
+T do_stuff<T>::smallest()
 {
     return(a_>b_)?b_:a_;
 }
 
 template <class T>
-T get_stuff<T>::diff()
+T do_stuff<T>::diff()
 {
     if(a_>=b_)
     {
@@ -102,24 +140,30 @@ T get_stuff<T>::diff()
 }
 
 template <class T>
-T get_stuff<T>::sum()
+T do_stuff<T>::sum()
 {
     return(a_ + b_);
 }
 
-class my_class
+class the_stuff
 {
 public:
-    my_class(int x, int y)
+    the_stuff(int x, int y)
     {
         x_ = x;
         y_ = y;
-        pMy_stuff = new get_stuff<int>(x,y);
+        srand(y_);
+        for(int i = 0; i < x_; i++)
+        {
+            my_vector_of_stuff.push_back(rand());
+        }
+        pDo_Stuff = new do_stuff<int>(my_vector_of_stuff, x_, y_);
     };
 
-    get_stuff<int> * pMy_stuff;
+    do_stuff<int> * pDo_Stuff;
 private:
     int x_,y_;
+    vector<int> my_vector_of_stuff;
 };
 
 int main() {
@@ -128,9 +172,9 @@ int main() {
     float density = 0.2;
 //    point a, b(2,1), c(0.5,6);
     Graph * graph = new Graph(verticies, max_range, density);
-    my_class * a_class = new my_class(2,4);
+    the_stuff * Stuff = new the_stuff(10,4);
 
-    cout << a_class->pMy_stuff->biggest() << endl;
+    Stuff->pDo_Stuff->orderly_sum(3,8);
 
 //    a = b + c;
     Shortest_Path * Path = new Shortest_Path(graph, START_NODE, END_NODE);
