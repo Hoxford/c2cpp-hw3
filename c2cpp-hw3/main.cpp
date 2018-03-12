@@ -59,6 +59,12 @@ public:
         return true;
     }
 
+    bool get_top(U * item)
+    {
+        *item = order[0];
+        return true;
+    }
+
 private:
     vector<U>order;
 };
@@ -68,6 +74,8 @@ struct items
 {
     item index;
     item value;
+    item * next;
+    item * previous;
 };
 
 //struct item
@@ -113,6 +121,9 @@ T do_stuff<T>::orderly_sum(T start, T end)
 //    assert(start >= a_);  todo a and b will need to represent beginning and end of vector
 //    assert(end <= b_);
     vector<items<T>>stuff;
+    items<T> Looking_at;
+    vector<items<T>>ordered_list;
+    items<T> top;
     T i;
     unsigned int n;
 
@@ -125,12 +136,22 @@ T do_stuff<T>::orderly_sum(T start, T end)
     }
 
     order_stuff<T,items<T>> * pOrder = new order_stuff<T,items<T>>((start - end) + 1);
-//    pOrder->put_on()
+    //start queue list
+    pOrder->put_on(stuff[0]);
     //    pOrder->put_on(n_[start]);
-//    for(T i = start; i <= end; i++)
-//    {
-//        pOrder;
-//    }
+    //pull all items from the list
+    for(i = start, n = 1; i <= end; i++, n++)
+    {
+        pOrder->get_top(&Looking_at);
+        if(Looking_at.value > stuff[n].value)
+        {
+            Looking_at.previous = &stuff[n];
+        }
+        else
+        {
+
+        }
+    }
 
     return 0;
 }
