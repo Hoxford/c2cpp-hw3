@@ -33,6 +33,8 @@
 #include <list>
 #include <cassert>
 #include <algorithm>
+#include <string>
+#include <typeinfo>
 
 #include "graph.hpp"
 #include "priority_queue.hpp"
@@ -40,33 +42,29 @@
 
 using namespace std;
 
-const unsigned int START_NODE   = 10;
-const unsigned int END_NODE     = 10;
-
+const unsigned int START_NODE   = 0;
+const unsigned int END_NODE     = 6;
 
 
 template <class L, class U>
 class queue_of_stuff
 {
 public:
-    queue_of_stuff()
+    queue_of_stuff(L len)
     {
 //        order.resize(length);
         queue_len = 0;
     }
 
-    bool put_top(U thing)
+    bool put_front(U thing)
     {
         queue_len++;
         queue.insert(queue.begin(), thing);
 
-//        queue.push_back(queue_item(thing));
-//        std::rotate(queue.begin(),queue.begin()+1,queue.end());
-
         return true;
     }
 
-    bool pop_top(U * item)
+    bool pop_front(U * item)
     {
         if(queue_len > 0)
         {
@@ -107,34 +105,23 @@ struct items
     item value;
 };
 
-//struct item
-//{
-//    item index;
-//    item value;
-//};
-
 template <class T>
 class do_stuff
 {
 public:
-    do_stuff(vector<T>*n, T a, T b)
-    {
-        a_ = a;
-        b_ = b;
-        n_ = n;
-    }
+    do_stuff(vector<T>*n, T a, T b);
     T biggest();
     T smallest();
     T diff();
     T sum();
     T orderly_sum(T start, T end);
 
-//    template<typename items>
-//    struct item
-//    {
-//        T index;
-//        T value;
-//    };
+    template<typename items>
+    struct item
+    {
+        T index;
+        T value;
+    };
 
 private:
     T a_;
@@ -143,116 +130,117 @@ private:
 };
 
 template <class T>
+do_stuff<T>::do_stuff(vector<T>*n, T a, T b)
+{
+    cout << (__PRETTY_FUNCTION__) << endl;
+    a_ = a;
+    b_ = b;
+    n_ = n;
+}
+
+template <class T>
 T do_stuff<T>::orderly_sum(T start, T end)
 {
     assert(start != end);
     assert(start < end);
-//    assert(start >= a_);  todo a and b will need to represent beginning and end of vector
-//    assert(end <= b_);
     vector<items<T>>work_list;
     items<T> Looking_at;
     vector<items<T>>ordered_list;
-//    items<T> top;
-    T diff = end - start;
-    T i;
     T sum = 0;
-    unsigned int n;
+//    T diff = end - start;
+//    T i;
+//    unsigned int n;
+//
+//    //fill the vector list with items from stuffs vector
+//    for(i = start, n = 0; i <= end; i++, n++)
+//    {
+//        work_list.push_back(items<T>());
+//        work_list[n].index = i;
+//        work_list[n].value = (*n_)[i];
+//        cout << "work_list[" << n << "].index =" << work_list[n].index << endl;
+//        cout << "work_list[" << n << "].value =" << work_list[n].value << endl;
+//    }
 
-    //fill the vector list with items from stuffs vector
-    for(i = start, n = 0; i <= end; i++, n++)
-    {
-        work_list.push_back(items<T>());
-        work_list[n].index = i;
-        work_list[n].value = (*n_)[i];
-        cout << "work_list[" << n << "].index =" << work_list[n].index << endl;
-        cout << "work_list[" << n << "].value =" << work_list[n].value << endl;
-    }
+    Priority_Queue<T,items<T>> * pOrderly_queue = new Priority_Queue<T,items<T>>();
 
-    queue_of_stuff<T,items<T>> * pOrderly_queue = new queue_of_stuff<T,items<T>>();
-
-    if(diff == 1)
-    {
-        if(work_list[0].value < work_list[1].value)
-        {
-            sum = work_list[0].value + work_list[1].value;
-        }
-        else
-        {
-            sum = work_list[1].value + work_list[0].value;
-        }
-    }
-    else
-    {
-        pOrderly_queue->put_top(work_list[0]);
-
-        //start queue list
-//        for(int j = 0; j < diff; j++)
+//    if(diff == 1)
+//    {
+//        if(work_list[0].value < work_list[1].value)
 //        {
-            for(n = 1; n < work_list.size(); n++)
-            {
-                pOrderly_queue->pop_top(&Looking_at);
-                while(1)
-                {
-                    //find in the queue where the work list item is less then the queue item
-                    //signifying where the value should go
-                    if(work_list[n].value > Looking_at.value)
-                    {
-    //                    queue.insert(queue.begin(), thing);
-
-                        //orderd list will be in reverse order but put back in order when put in queue
-                        ordered_list.insert(ordered_list.begin(), Looking_at);
-//                        ordered_list.push_back(Looking_at);
-    //                    std::rotate(ordered_list.begin(),ordered_list.end(),ordered_list.end());
-    //                    ordered_list[0] = Looking_at;
-                        bool rc;
-                        rc = pOrderly_queue->pop_top(&Looking_at);
-                        //check if the end of the queue was reached
-                        if(rc == false)
-                        {
-                            //end of queue, put work list item on the queue
-                            pOrderly_queue->put_top(work_list[n]);
-                            while(ordered_list.size() > 0)
-                            {
-                                pOrderly_queue->put_top(ordered_list[0]);
-                                ordered_list.erase(ordered_list.begin());
-                            }
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        //found spot to insert work list item into queue
-
-                        //put looking at item back in queue
-                        pOrderly_queue->put_top(Looking_at);
-
-                        //put work list item on top of the queue
-                        pOrderly_queue->put_top(work_list[n]);
-
-                        //put ordered list items on top of the queue
-                        while(ordered_list.size() > 0)
-                        {
-                            Looking_at = ordered_list[0];
-                            pOrderly_queue->put_top(Looking_at);
-                            ordered_list.erase(ordered_list.begin());
-                                    //work_list[n]);
-                        }
-                        break;
-//                        ordered_list.push_back(items<T>());
-//                        std::rotate(ordered_list.begin(),ordered_list.end(),ordered_list.end());
-//                        ordered_list[0] = Looking_at;
-                    }
-                }
-            }
+//            sum = work_list[0].value + work_list[1].value;
 //        }
+//        else
+//        {
+//            sum = work_list[1].value + work_list[0].value;
+//        }
+//    }
+//    else
+//    {
+//        //start queue list
+//        pOrderly_queue->put_front(work_list[0]);
+//
+//        for(n = 1; n < work_list.size(); n++)
+//        {
+//            pOrderly_queue->pop_front(&Looking_at);
+//            while(1)
+//            {
+//                //find in the queue where the work list item is less then the queue item
+//                //signifying where the value should go
+//                if(work_list[n].value > Looking_at.value)
+//                {
+//                    //ordered list will be in reverse order but put back in order when put in queue
+//                    ordered_list.insert(ordered_list.begin(), Looking_at);
+//                    bool rc;
+//                    rc = pOrderly_queue->pop_front(&Looking_at);
+//                    //check if the end of the queue was reached
+//                    if(rc == false)
+//                    {
+//                        //end of queue, put work list item on the queue
+//                        pOrderly_queue->put_front(work_list[n]);
+//                        while(ordered_list.size() > 0)
+//                        {
+//                            pOrderly_queue->put_front(ordered_list[0]);
+//                            ordered_list.erase(ordered_list.begin());
+//                        }
+//                        break;
+//                    }
+//                }
+//                else
+//                {
+//                    //found spot to insert work list item into queue
+//
+//                    //put looking at item back in queue
+//                    pOrderly_queue->put_front(Looking_at);
+//
+//                    //put work list item on top of the queue
+//                    pOrderly_queue->put_front(work_list[n]);
+//
+//                    //put ordered list items on top of the queue
+//                    while(ordered_list.size() > 0)
+//                    {
+//                        Looking_at = ordered_list[0];
+//                        pOrderly_queue->put_front(Looking_at);
+//                        ordered_list.erase(ordered_list.begin());
+//                                //work_list[n]);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//    }
+
+    for(T i = start; i <= end; i++)
+    {
+
     }
 
-    while(pOrderly_queue->pop_top(&Looking_at) == true)
+    //perform the orderly sum
+    while(pOrderly_queue->pop_front(&Looking_at) == true)
     {
         cout << "ordered queue index =" << Looking_at.index << endl;
         cout << "ordered queue value =" << Looking_at.value << endl;
+        sum += Looking_at.value;
     }
-
 
     return sum;
 }
@@ -311,19 +299,19 @@ private:
 };
 
 int main() {
-//    int verticies = 50;
-//    float max_range = 9.5;
-//    float density = 0.2;
-//    point a, b(2,1), c(0.5,6);
-//    Graph * graph = new Graph(verticies, max_range, density);
+    int verticies = 50;
+    float max_range = 9.5;
+    float density = 0.2;
+    Graph * graph = new Graph(verticies, max_range, density);
     const unsigned int STUFF_LEN = 10;
     const unsigned int STUFF_SEED = 4;
     the_stuff * Stuff = new the_stuff(STUFF_LEN,STUFF_SEED);
 
     cout << "orderly sum: " << Stuff->pDo_Stuff->orderly_sum(4,6) << endl;
 
-//    a = b + c;
-//    Shortest_Path * Path = new Shortest_Path(graph, START_NODE, END_NODE);
+    Shortest_Path<float> * Path = new Shortest_Path<float>(graph, START_NODE, END_NODE);
+    cout << "Path cost: " << Path->path_size() << endl;
+//    Path = new Shortest_Path<float>(graph, START_NODE, END_NODE);
 //    for(int x = 0; x < verticies; x++)
 //    {
 //        for(int y = 0; y < verticies; y++)
@@ -334,3 +322,4 @@ int main() {
     cout << "-fin-" << endl;
     return 0;
 }
+

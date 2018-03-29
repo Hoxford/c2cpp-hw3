@@ -38,6 +38,11 @@ public:
     float get_edge_value(unsigned int node_x, unsigned int node_y);
     //sets the value associated to the edge (x,y).
     bool set_edge_value(unsigned int node_x, unsigned int node_y, float value);
+
+    unsigned int get_num_nodes()
+    {
+        return total_vertices_;
+    }
 private:
     //adds to G the edge from x to y, if it is not there, only used by the constructor.
     bool add_edge(unsigned int x, unsigned int y, float range);
@@ -102,8 +107,8 @@ inline bool Graph::add_edge(unsigned int node_x, unsigned int node_y, float rang
     }
     else
     {
-        cout <<"edge exists"<<endl;
-        return false;
+        float existing_range = graph_[node_x][node_y];
+        cout <<"[" << node_y << "][" << node_x <<"] = " << existing_range << ", existing edge"<<endl;
     }
 
     return true;
