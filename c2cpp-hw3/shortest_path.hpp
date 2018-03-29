@@ -41,6 +41,8 @@ public:
         eliminated_nodes_.clear();
     }
 
+    //todo: Shortest_Path function comment descriptions
+
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //! path
     //!
@@ -50,20 +52,21 @@ public:
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     inline list<unsigned int> *path(Path_Type eType = Path_Type::eSHORTEST)
     {
-        //todo: return request path type
+        //todo: have a pointer to path to fill as a parameter, and return error code instead
+        //todo FEATURE: return request path type
         return &shortest_path_;
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //! path_size
+    //! path_cost
     //!
     //! \brief  returns the path cost requested by the parameter.
     //!
     //! \param
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    inline E path_size(Path_Type eType = Path_Type::eSHORTEST)
+    inline E path_cost(Path_Type eType = Path_Type::eSHORTEST)
     {
-        //todo: return request path cost type
+        //todo FEATURE: return request path cost type
         return cost_;
     }
 
@@ -76,7 +79,7 @@ public:
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     inline unsigned int path_len(Path_Type eType = Path_Type::eSHORTEST)
     {
-        //todo: return requested path size  type
+        //todo FEATURE: return requested path size  type
         return shortest_path_.size();
     }
 
@@ -219,6 +222,25 @@ private:
     //! \param
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     bool was_path_attempted(unsigned int possible_end);
+
+    E calculate_cost(list<unsigned int> * pPath)
+    {
+        assert(pPath != NULL);
+        if(1 == pPath->size()){return 0;}
+
+        E calculated_cost = 0;
+        unsigned int node_a, node_b;
+        node_a = node_b = 0;
+        for(list<unsigned int>::const_iterator iterator = pPath->begin(), end = pPath->end(); iterator != end;)// ++iterator)
+        {
+            node_a = *iterator;
+            ++iterator;
+            if(iterator == end){break;}
+            node_b = *iterator;
+            calculated_cost += graph_->get_edge_value(node_a, node_b);
+        }
+        return calculated_cost;
+    }
 
     class neighbor_node
     {

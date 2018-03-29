@@ -21,6 +21,7 @@ public:
     Graph(unsigned int verticies, float max_range, double density);
 
     ~Graph();
+    //todo: Priority_Queue function comment descriptions
 
     // returns the number of vertices in the graph
     unsigned int V();

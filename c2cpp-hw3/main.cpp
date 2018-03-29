@@ -20,13 +20,14 @@
  * shortest path.
  */
 
+//todo: "What I learned" write up
+//todo: path calculation printouts
 /* Turn in:
  * Printout of program, 200 words on what you learned, and output showing the average
  * path length calculation. Use densities: 20% and 40% on a graph of 50 nodes with
  * a distance range of 1.0 to 10.0. To get an average path length, compute the
  * 49 paths.
  */
-
 
 #include <iostream>
 #include <vector>
@@ -43,8 +44,9 @@
 using namespace std;
 
 const unsigned int START_NODE   = 0;
-const unsigned int END_NODE     = 6;
+const unsigned int END_NODE     = 2;
 
+//todo: get rid of "stuff" code
 
 template <class L, class U>
 class queue_of_stuff
@@ -298,6 +300,7 @@ private:
     vector<int> my_vector_of_stuff;
 };
 
+//todo FEATURE take input parameters
 int main() {
     int verticies = 50;
     float max_range = 9.5;
@@ -310,15 +313,8 @@ int main() {
     cout << "orderly sum: " << Stuff->pDo_Stuff->orderly_sum(4,6) << endl;
 
     Shortest_Path<float> * Path = new Shortest_Path<float>(graph, START_NODE, END_NODE);
-    cout << "Path cost: " << Path->path_size() << endl;
-//    Path = new Shortest_Path<float>(graph, START_NODE, END_NODE);
-//    for(int x = 0; x < verticies; x++)
-//    {
-//        for(int y = 0; y < verticies; y++)
-//        {
-////            Path->path();
-//        }
-//    }
+    cout << "Path cost: " << Path->path_cost() << endl;
+
     cout << "-fin-" << endl;
     return 0;
 }

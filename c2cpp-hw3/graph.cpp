@@ -2,7 +2,7 @@
  * graph.cpp
  *
  *  Created on: Mar 4, 2018
- *      Author: storm
+ *      Author: Matt B
  */
 
 #include <iostream>
@@ -14,6 +14,7 @@
 
 using namespace std;
 
+//todo: test shortest path with a randomly generated map
 #if defined(CANNED_GRAPH)
 //Node 7 is completely isolated
 //Node 2 is a dead end

@@ -56,6 +56,9 @@ public:
         queue_len_ = 0;
     }
     ~Priority_Queue(){priority_queue.clear();}
+
+    //todo: Priority_Queue function comment descriptions
+
     //chgPrioirity(PQ, priority): changes the priority (node value) of queue element.
     bool chgPrioirity(int priority);
 
@@ -117,6 +120,7 @@ public:
     }
 
     //puts the higher priority item into the lower priority items spot and pushes back all lower priorities
+    //todo: determine if this is needed anymore and if it can be eliminated
     bool put_insert(I higher_priority_item, I lower_priority_item)
     {
 //        queue_len_++;

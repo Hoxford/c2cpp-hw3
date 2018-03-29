@@ -2,7 +2,7 @@
  * shortest_path.cpp
  *
  *  Created on: Mar 8, 2018
- *      Author: storm
+ *      Author: Matt B
  */
 
 #include <iostream>
@@ -52,6 +52,7 @@ Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int 
     {
         shortest_path_.push_back(end_);
         cout << "Start and end are neighbors." << endl;
+        cost_ = calculate_cost(&shortest_path_);
     }
     else if(is_node_dead_end(start_))
     {
@@ -86,6 +87,7 @@ Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int 
                                 cout << *iterator << ", ";
                             }
                             cout << endl;
+                            cost_ = calculate_cost(&shortest_path_);
                             return;
                         }
                         neighbor_node Node(edge,i);

@@ -2,7 +2,7 @@
  * priority_queue.cpp
  *
  *  Created on: Mar 9, 2018
- *      Author: storm
+ *      Author: Matt B
  */
 
 #include <iostream>
