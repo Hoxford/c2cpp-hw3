@@ -16,18 +16,11 @@
 
 using namespace std;
 
-//template<typename Edge_Type>
-//struct Neighbor_Node
-//{
-//    unsigned int neighbor_node_id;
-//    Edge_Type edge_distance;
-//};
-
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //! Public Functions
 //!
 template <class E>
-#if defined(DEBUG)
+#if (defined(DEBUG) && defined(CONSTRUCTOR_TRACING))
 Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int end, const char* calling_fcn)
 {
     cout << "Shortest_Path constructor called by " << calling_fcn << "()" << endl;
@@ -45,7 +38,6 @@ Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int 
     E edge = 0;
     num_nodes = graph_->get_num_nodes();
 
-//    Priority_Queue<E, neighbor_node> * queue = new Priority_Queue<E, neighbor_node>();
     shortest_path_.push_back(start_);
 
     if(graph->get_edge_value(start_, end_) > 0)
@@ -88,6 +80,7 @@ Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int 
                             }
                             cout << endl;
                             cost_ = calculate_cost(&shortest_path_);
+                            delete queue;
                             return;
                         }
                         neighbor_node Node(edge,i);
@@ -105,6 +98,7 @@ Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int 
                         //if all nodes were checked then start again
                         //save the path
                         save_attempted_path();
+
                         //start over
                         path_reset();
                         current_node = start_;
@@ -143,6 +137,7 @@ Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int 
                 {
                     //save the path
                     save_attempted_path();
+
                     //start over
                     path_reset();
                     current_node = start_;
@@ -162,14 +157,14 @@ Shortest_Path<E>::Shortest_Path(Graph * graph, unsigned int start, unsigned int 
 #endif
                 return;
             }
-#if defined(DEBUG)
-            cout << "current working path: ";
-            for(list<unsigned int>::const_iterator iterator = shortest_path_.begin(), end = shortest_path_.end(); iterator != end; ++iterator)
-            {
-                cout << *iterator << ", ";
-            }
-            cout << endl;
-#endif
+//#if defined(DEBUG)
+//            cout << "current working path: ";
+//            for(list<unsigned int>::const_iterator iterator = shortest_path_.begin(), end = shortest_path_.end(); iterator != end; ++iterator)
+//            {
+//                cout << *iterator << ", ";
+//            }
+//            cout << endl;
+//#endif
         }
     }
 }
@@ -234,6 +229,58 @@ bool Shortest_Path<E>::can_node_be_considered(unsigned int node_to_check, unsign
 template <class E>
 bool Shortest_Path<E>::was_path_attempted(unsigned int possible_end)
 {
+#if defined(ATTEMPTED_PATH_SEARCH_USING_QUEUE)
+    Priority_Queue<E, list<unsigned int>> search_queue_attempted_paths = queue_attempted_paths_;
+
+    if(0 == search_queue_attempted_paths.size())
+    {
+        return false;
+    }
+    else
+    {
+        list<unsigned int> potential_shortest_path = shortest_path_;
+        potential_shortest_path.push_back(possible_end);
+        while(search_queue_attempted_paths.size() >= 1)
+        {
+            list<unsigned int> previous_path;
+            search_queue_attempted_paths.pop_front(&previous_path);
+            if(previous_path.size() < potential_shortest_path.size())
+            {
+                continue;
+            }
+            else if(previous_path.size() == potential_shortest_path.size())
+            {
+                bool match = true;
+                for(
+                    list<unsigned int>::const_iterator previous_iterator = previous_path.begin(),
+                    previous_end = previous_path.end(),
+                    shortest_iterator = potential_shortest_path.begin(),
+                    shortest_end = potential_shortest_path.end();
+                    (previous_iterator != previous_end)&&(shortest_iterator != shortest_end);
+                    previous_iterator++,
+                    shortest_iterator++
+                    )
+                {
+                    if(*previous_iterator != *shortest_iterator)
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+                if(match == true)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+#else
+
     unsigned int attempted_paths_size = attempted_paths_.size();
     if(0 == attempted_paths_size)
     {
@@ -274,6 +321,7 @@ bool Shortest_Path<E>::was_path_attempted(unsigned int possible_end)
         return false;
     }
     return true;
+#endif
 }
 
 template class Shortest_Path<float>;

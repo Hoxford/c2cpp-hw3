@@ -43,8 +43,11 @@
 
 using namespace std;
 
-const unsigned int START_NODE   = 0;
-const unsigned int END_NODE     = 2;
+const unsigned int DEFAULT_VERTICIES = 50;
+const double       DEFAULT_RANGE     = 10.0;
+const double       DEFAULT_DENSITY   = 0.04;
+const unsigned int START_NODE    = 0;
+const unsigned int END_NODE      = 49;
 
 //todo: get rid of "stuff" code
 
@@ -302,18 +305,21 @@ private:
 
 //todo FEATURE take input parameters
 int main() {
-    int verticies = 50;
-    float max_range = 9.5;
-    float density = 0.2;
-    Graph * graph = new Graph(verticies, max_range, density);
+
     const unsigned int STUFF_LEN = 10;
     const unsigned int STUFF_SEED = 4;
     the_stuff * Stuff = new the_stuff(STUFF_LEN,STUFF_SEED);
 
     cout << "orderly sum: " << Stuff->pDo_Stuff->orderly_sum(4,6) << endl;
 
-    Shortest_Path<float> * Path = new Shortest_Path<float>(graph, START_NODE, END_NODE);
-    cout << "Path cost: " << Path->path_cost() << endl;
+    //test loop to exercise the pathing algorithm
+    for(int i = 0; i < 20; i ++)
+    {
+        Graph graph(DEFAULT_VERTICIES, DEFAULT_RANGE, DEFAULT_DENSITY);
+        Shortest_Path<float> Path(&graph, START_NODE, END_NODE);
+        cout << "Path cost: " << Path.path_cost() << endl;
+    }
+
 
     cout << "-fin-" << endl;
     return 0;

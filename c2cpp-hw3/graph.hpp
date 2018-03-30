@@ -50,7 +50,8 @@ private:
     //removes the edge from x to y, if it is there, only used by the constructor.
     bool remove_edge(unsigned int node_x, unsigned int node_y);
 
-    float density_;
+//    float density_;
+    double density_;
     unsigned int total_vertices_;
     unsigned int total_edges_;
     float max_range_;
@@ -98,18 +99,12 @@ inline bool Graph::add_edge(unsigned int node_x, unsigned int node_y, float rang
         {
             graph_[node_y][node_x] = range;
             graph_[node_x][node_y] = range;
-            cout <<"[" << node_y << "][" << node_x <<"] = "<<range<<endl;
         }
         else
         {
             cout <<"cant exist!"<<endl;
             return false;
         }
-    }
-    else
-    {
-        float existing_range = graph_[node_x][node_y];
-        cout <<"[" << node_y << "][" << node_x <<"] = " << existing_range << ", existing edge"<<endl;
     }
 
     return true;

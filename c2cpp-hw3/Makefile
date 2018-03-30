@@ -1,4 +1,5 @@
-CXXFLAGS =    -O0 -g -Wall -fmessage-length=0 -DDEBUG -DCANNED_GRAPH
+#CXXFLAGS =    -O0 -g -Wall -fmessage-length=0 -DDEBUG -DCANNED_GRAPH
+CXXFLAGS =    -O0 -g -Wall -fmessage-length=0 -DDEBUG
 
 OBJS =    main.o\
           graph.o\

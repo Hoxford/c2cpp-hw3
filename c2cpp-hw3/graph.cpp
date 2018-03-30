@@ -66,9 +66,10 @@ Graph::Graph(unsigned int verticies, float max_range, double density)
 
     srand(time(nullptr));
 
-    for(unsigned int y = 0; y < total_vertices_; y++)
+    unsigned int start_node = 0;
+    for(unsigned int y = start_node; y < total_vertices_; y++)
     {
-        for(unsigned int x = 0; x < total_vertices_; x++)
+        for(unsigned int x = start_node; x < total_vertices_; x++)
         {
             if(y == x)
             {
@@ -76,9 +77,10 @@ Graph::Graph(unsigned int verticies, float max_range, double density)
             }
             else
             {
-                double random = rand() % 10;
-                double edge_probability = random/10.0;
-                if(edge_probability <= density_)
+                unsigned int dec_density = density_ * 100;
+                unsigned int dec_random = rand() % 100 + 1;
+
+                if(dec_random <= dec_density)
                 {
                     int mod = max_range * 10;
                     float random = rand() % mod;
@@ -87,6 +89,16 @@ Graph::Graph(unsigned int verticies, float max_range, double density)
                 }
             }
         }
+#if defined(DEBUG)
+        for(unsigned int i = 0; i < total_vertices_; i++)
+        {
+            if(graph_[y][i] > 0)
+            {
+                cout <<"[" << y << "][" << i <<"] = " << graph_[y][i] << endl << flush;
+            }
+        }
+#endif
+        start_node++;
     }
 #endif
 }

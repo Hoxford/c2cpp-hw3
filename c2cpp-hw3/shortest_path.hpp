@@ -28,7 +28,7 @@ class Shortest_Path
 {
 public:
     //the constructor will determine the shortest path between start and end
-#if defined(DEBUG)
+#if (defined(DEBUG) && defined(CONSTRUCTOR_TRACING))
     Shortest_Path(Graph * graph, unsigned int start, unsigned int end, const char* calling_fcn = __builtin_FUNCTION());
 #else
     Shortest_Path(Graph * graph, unsigned int start, unsigned int end);
@@ -197,6 +197,7 @@ private:
         cout << endl;
 #endif
         attempted_paths_.push_back(shortest_path_);
+        queue_attempted_paths_.put(shortest_path_.size(), shortest_path_);
     }
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -210,7 +211,7 @@ private:
     {
         shortest_path_.clear();
         visited_nodes_.clear();
-        eliminated_nodes_.clear();
+//        eliminated_nodes_.clear();
         cost_ = 0;
     }
 
@@ -261,6 +262,7 @@ private:
 
     list<unsigned int> shortest_path_;
     list<list<unsigned int>> attempted_paths_;
+    Priority_Queue<E, list<unsigned int>> queue_attempted_paths_;
     list<unsigned int> visited_nodes_;
     list<unsigned int> eliminated_nodes_;
     E cost_;

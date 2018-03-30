@@ -44,7 +44,7 @@ template <class P, class I>
 class Priority_Queue
 {
 public:
-#if defined(DEBUGN)
+#if (defined(DEBUG) && defined(CONSTRUCTOR_TRACING))
     Priority_Queue(const char* calling_fcn = __builtin_FUNCTION())
     {
         cout << "Priority_Queue constructor called by " << calling_fcn << "()" << endl;
